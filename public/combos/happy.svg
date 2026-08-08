@@ -1,0 +1,33 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#050507"/>
+      <stop offset="45%" stop-color="#101012"/>
+      <stop offset="100%" stop-color="#050507"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="18" result="b"/>
+      <feColorMatrix in="b" type="matrix" values="1 0 0 0 0  0 0.9 0 0 0  0 0 0.1 0 0  0 0 0 0.7 0" result="y"/>
+      <feMerge><feMergeNode in="y"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#g)"/>
+
+  <g filter="url(#glow)" opacity="0.9">
+    <path d="M160 520 C 300 420, 440 620, 580 520 S 860 420, 1040 520" fill="none" stroke="#FFD400" stroke-width="12" opacity="0.22"/>
+    <path d="M160 560 C 320 460, 440 660, 600 560 S 900 460, 1040 560" fill="none" stroke="#FFD400" stroke-width="10" opacity="0.18"/>
+    <path d="M160 600 C 340 510, 460 700, 620 600 S 920 510, 1040 600" fill="none" stroke="#FFD400" stroke-width="8" opacity="0.14"/>
+  </g>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" fill="#F5F5F5">
+    <text x="70" y="120" font-size="20" letter-spacing="6" opacity="0.7">SIGA AUDIO</text>
+    <text x="70" y="170" font-size="56" font-weight="800">HAPPY PEOPLE</text>
+    <text x="70" y="214" font-size="22" opacity="0.75">Loud mids + strong bass</text>
+  </g>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" fill="#FFD400">
+    <text x="70" y="710" font-size="22" font-weight="700">BUILT FOR VOLUME</text>
+  </g>
+</svg>
+

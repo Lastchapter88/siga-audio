@@ -1,0 +1,24 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="g" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#050507"/>
+      <stop offset="45%" stop-color="#121216"/>
+      <stop offset="100%" stop-color="#050507"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <path d="M90 540 C 200 420, 320 420, 420 500 C 520 580, 740 590, 860 510 C 980 430, 1080 440, 1120 500" fill="none" stroke="#FFD400" stroke-width="10" opacity="0.18"/>
+  <path d="M120 560 C 240 470, 340 470, 450 530 C 560 590, 720 600, 840 550 C 960 500, 1040 500, 1090 540" fill="none" stroke="#FFD400" stroke-width="8" opacity="0.12"/>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" fill="#F5F5F5">
+    <text x="70" y="120" font-size="20" letter-spacing="6" opacity="0.7">SIGA AUDIO</text>
+    <text x="70" y="170" font-size="56" font-weight="800">POLO VIVO</text>
+    <text x="70" y="214" font-size="22" opacity="0.75">Vehicle specific full system</text>
+  </g>
+
+  <g font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial" fill="#FFD400">
+    <text x="70" y="710" font-size="22" font-weight="700">APPLE CARPLAY " LOUD MIDS " DEEP BASS</text>
+  </g>
+</svg>
+
