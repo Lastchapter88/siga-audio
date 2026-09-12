@@ -505,6 +505,14 @@ export default function AdminContentPage() {
             setContent({ ...content, moreServices: { ...content.moreServices, title: e.target.value } })
           }
         />
+        <input
+          className="input"
+          placeholder="Subtitle (optional)"
+          value={content.moreServices.subtitle ?? ""}
+          onChange={(e) =>
+            setContent({ ...content, moreServices: { ...content.moreServices, subtitle: e.target.value } })
+          }
+        />
         {content.moreServices.items.map((item, index) => (
           <div key={item.id} className="border border-gray-800 rounded-xl p-4 space-y-3">
             <div className="flex justify-between gap-2">
@@ -595,6 +603,80 @@ export default function AdminContentPage() {
             </div>
           </div>
         ))}
+      </section>
+
+      <section className="bg-[#111] border border-gray-800 rounded-2xl p-5 space-y-4">
+        <h2 className="text-lg font-bold">Terms & conditions</h2>
+        <input
+          className="input"
+          placeholder="Section title"
+          value={content.termsAndConditions.title}
+          onChange={(e) =>
+            setContent({
+              ...content,
+              termsAndConditions: { ...content.termsAndConditions, title: e.target.value },
+            })
+          }
+        />
+        <input
+          className="input"
+          placeholder="Poster image URL (optional)"
+          value={content.termsAndConditions.posterImageUrl ?? ""}
+          onChange={(e) =>
+            setContent({
+              ...content,
+              termsAndConditions: { ...content.termsAndConditions, posterImageUrl: e.target.value },
+            })
+          }
+        />
+        {content.termsAndConditions.items.map((term, index) => (
+          <div key={index} className="flex gap-2">
+            <input
+              className="input"
+              placeholder={`Term ${index + 1}`}
+              value={term}
+              onChange={(e) => {
+                const items = content.termsAndConditions.items.map((row, i) =>
+                  i === index ? e.target.value : row
+                );
+                setContent({
+                  ...content,
+                  termsAndConditions: { ...content.termsAndConditions, items },
+                });
+              }}
+            />
+            <button
+              type="button"
+              className="text-xs text-red-400 shrink-0 px-2"
+              onClick={() =>
+                setContent({
+                  ...content,
+                  termsAndConditions: {
+                    ...content.termsAndConditions,
+                    items: content.termsAndConditions.items.filter((_, i) => i !== index),
+                  },
+                })
+              }
+            >
+              Remove
+            </button>
+          </div>
+        ))}
+        <button
+          type="button"
+          className="text-xs font-semibold text-sigaYellow border border-sigaYellow/40 rounded-lg px-3 py-1.5"
+          onClick={() =>
+            setContent({
+              ...content,
+              termsAndConditions: {
+                ...content.termsAndConditions,
+                items: [...content.termsAndConditions.items, ""],
+              },
+            })
+          }
+        >
+          Add term
+        </button>
       </section>
 
       <section className="bg-[#111] border border-gray-800 rounded-2xl p-5 space-y-4">

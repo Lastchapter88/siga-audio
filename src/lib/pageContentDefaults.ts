@@ -40,6 +40,12 @@ export type CustomSection = {
   enabled: boolean;
 };
 
+export type TermsAndConditions = {
+  title: string;
+  items: string[];
+  posterImageUrl?: string;
+};
+
 export type HomePageContent = {
   hero: HomeHeroContent;
   packages: {
@@ -52,8 +58,10 @@ export type HomePageContent = {
   };
   moreServices: {
     title: string;
+    subtitle?: string;
     items: ServiceCard[];
   };
+  termsAndConditions: TermsAndConditions;
   customSections: CustomSection[];
 };
 
@@ -91,22 +99,55 @@ export const DEFAULT_HOME_CONTENT: HomePageContent = {
     ],
   },
   moreServices: {
-    title: "More Services",
+    title: "Services We Offer",
+    subtitle: "Car sound supplies · Installations · Auto styling",
     items: [
       {
-        id: "sound",
-        title: "Sound Systems",
-        body: "Powerful bass, clean installs, and combo options for every budget.",
+        id: "fault-finding",
+        title: "Fault Finding",
+        body: "Diagnose and repair car audio problems — wiring, head units, amps, and speakers.",
+        href: "/book",
+        ctaLabel: "Book a visit →",
+      },
+      {
+        id: "installations",
+        title: "Installations",
+        body: "Professional car sound installs, from entry-level systems to full custom builds.",
         href: "/combos",
-        ctaLabel: "View Combos →",
+        ctaLabel: "View packages →",
+      },
+      {
+        id: "sales",
+        title: "Sales",
+        body: "Car sound supplies and equipment — radios, amps, speakers, subwoofers, and more.",
+        href: "https://wa.me/27682824322",
+        ctaLabel: "Enquire on WhatsApp →",
+      },
+      {
+        id: "bumper-sensors",
+        title: "Bumper Sensors",
+        body: "Parking and bumper sensor installation for safer reversing and parking.",
+        href: "/book",
+        ctaLabel: "Book installation →",
       },
       {
         id: "air",
         title: "Air Suspension",
         body: "Ride height control for comfort, style, and better underbody protection.",
         href: "/air-suspension",
-        ctaLabel: "Explore Suspension →",
+        ctaLabel: "Explore suspension →",
       },
+    ],
+  },
+  termsAndConditions: {
+    title: "Terms & Conditions",
+    posterImageUrl: "/combos/sigaposter.jpg",
+    items: [
+      "No guarantee or warranty on tweeters, speakers & subwoofers.",
+      "Do not leave the premises without proof of payment.",
+      "No cash refund.",
+      "Repairs take 2–3 weeks.",
+      "Only radios, amplifiers, equalizers, crossovers & monoblocks carry a 6-month warranty repair.",
     ],
   },
   customSections: [],
@@ -118,9 +159,9 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   phone: "0682824322",
   whatsappCtaLabel: "WhatsApp Booking",
   depositLabel: "R500 deposit (EFT)",
-  bankName: "Ask on WhatsApp for bank name",
-  accountName: "SIGA AUDIO SA",
-  accountNumber: "",
+  bankName: "Standard Bank",
+  accountName: "SIGA AUDIO PTY LTD",
+  accountNumber: "10264653678",
   branchCode: "",
   referenceHint: "Use your phone number as the payment reference",
 };
@@ -128,6 +169,11 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
 export function mergeHomeContent(partial?: Partial<HomePageContent> | null): HomePageContent {
   const d = DEFAULT_HOME_CONTENT;
   if (!partial) return structuredClone(d);
+
+  const legacyServices =
+    partial.moreServices?.items?.length === 2 &&
+    partial.moreServices.items.every((item) => item.id === "sound" || item.id === "air");
+
   return {
     hero: { ...d.hero, ...(partial.hero ?? {}), primaryCta: { ...d.hero.primaryCta, ...(partial.hero?.primaryCta ?? {}) }, secondaryCta: { ...d.hero.secondaryCta, ...(partial.hero?.secondaryCta ?? {}) } },
     packages: { ...d.packages, ...(partial.packages ?? {}) },
@@ -140,17 +186,45 @@ export function mergeHomeContent(partial?: Partial<HomePageContent> | null): Hom
     },
     moreServices: {
       title: partial.moreServices?.title ?? d.moreServices.title,
-      items:
-        partial.moreServices?.items && partial.moreServices.items.length > 0
+      subtitle: partial.moreServices?.subtitle ?? d.moreServices.subtitle,
+      items: legacyServices
+        ? d.moreServices.items
+        : partial.moreServices?.items && partial.moreServices.items.length > 0
           ? partial.moreServices.items
           : d.moreServices.items,
+    },
+    termsAndConditions: {
+      title: partial.termsAndConditions?.title ?? d.termsAndConditions.title,
+      posterImageUrl: partial.termsAndConditions?.posterImageUrl ?? d.termsAndConditions.posterImageUrl,
+      items:
+        partial.termsAndConditions?.items && partial.termsAndConditions.items.length > 0
+          ? partial.termsAndConditions.items
+          : d.termsAndConditions.items,
     },
     customSections: Array.isArray(partial.customSections) ? partial.customSections : [],
   };
 }
 
 export function mergeSiteSettings(partial?: Partial<SiteSettings> | null): SiteSettings {
-  return { ...DEFAULT_SITE_SETTINGS, ...(partial ?? {}) };
+  const d = DEFAULT_SITE_SETTINGS;
+  if (!partial) return { ...d };
+
+  const merged = { ...d, ...partial };
+  const legacyBankHint =
+    !merged.bankName?.trim() ||
+    merged.bankName === "Ask on WhatsApp for bank name" ||
+    merged.bankName === "Please ask on WhatsApp for banking details" ||
+    merged.bankName === "10264653678";
+
+  if (!merged.accountNumber?.trim() || merged.accountNumber === merged.bankName) {
+    merged.accountNumber = d.accountNumber;
+  }
+  if (!merged.accountName?.trim() || merged.accountName === "SIGA AUDIO SA") {
+    merged.accountName = d.accountName;
+  }
+  if (legacyBankHint) merged.bankName = d.bankName;
+
+  return merged;
 }
 
 /** Keep TypeScript happy for catalog references in CMS tooling. */

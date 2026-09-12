@@ -1,0 +1,9 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+Disallow: /account
+Disallow: /signup
+Disallow: /success
+
+Sitemap: https://sigaaudio.co.za/sitemap.xml

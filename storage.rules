@@ -10,6 +10,7 @@ service firebase.storage {
         && (
           request.auth.token.email == 'sigastreetaudio@gmail.com'
           || request.auth.token.email == 'luckysekhula@gmail.com'
+          || request.auth.token.email == 'sbudax.mlindo03@gmail.com'
         );
     }
 

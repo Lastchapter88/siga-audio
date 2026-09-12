@@ -16,7 +16,6 @@ const LEGACY_MAP: Record<string, string> = {
   "/combos/Party.jpg": "/combos/party.jpg",
   "/combos/polo%20vivo.jpg": "/combos/polo-vivo.jpg",
   "/combos/polo vivo.jpg": "/combos/polo-vivo.jpg",
-  "/combos/Trga-killer.jpg": "/targer-killer.jpg",
 };
 
 export function comboImageUrl(path: string | undefined | null): string {

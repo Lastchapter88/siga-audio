@@ -1,10 +1,10 @@
 export const PAYMENT = {
   depositLabel: "R500 deposit (EFT)",
-  accountName: "SIGA AUDIO SA",
-  bankName: "Please ask on WhatsApp for banking details",
-  accountNumber: "",
+  accountName: "SIGA AUDIO PTY LTD",
+  bankName: "Standard Bank",
+  accountNumber: "10264653678",
   branchCode: "",
-  referenceHint: "Use your WhatsApp/phone number as the payment reference",
+  referenceHint: "Use your phone number as the payment reference",
   whatsappLocal: "0682824322",
 } as const;
 

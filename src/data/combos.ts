@@ -62,25 +62,6 @@ export const combos: Combo[] = [
     image: "/combos/crazy.jpg"
   },
   {
-    id: "targa-killer",
-    slug: "targa-killer",
-    name: "Targa Killer Combo",
-    price: 9500,
-    tagline: "Open-air presence, serious output",
-    description:
-      "Built for drop-top and targa-style driving: loud, clean staging with bass that still hits when the roof comes off.",
-    features: [
-      "Weather-conscious install options",
-      "Strong midrange and tweeter stage",
-      "Subwoofer and matched amplifier",
-      "Wiring kit",
-      "Box or enclosure",
-      "Professional tuning"
-    ],
-    category: "premium",
-    image: "/targer-killer.jpg"
-  },
-  {
     id: "party",
     slug: "party-combo",
     name: "Party Combo",
@@ -150,5 +131,29 @@ export const combos: Combo[] = [
     category: "vehicle",
     vehicleModel: "Bakkie",
     image: "/combos/bakkie.jpg"
-  }
+  },
+  {
+    id: "quantum-basic",
+    slug: "quantum-basic-combo",
+    name: "Quantum Basic Combo",
+    price: 9999,
+    tagline: "Toyota Quantum package · Free installation",
+    description:
+      "Full Quantum taxi sound package with Android radio, dual subs, mids, bullet tweeters, side panels, and free installation.",
+    features: [
+      "Black Spider 9 inch Android radio",
+      "15 000W 4 channel amp",
+      "12 000W subs (x2)",
+      "34 000W mono",
+      "600W mids (x6)",
+      "Bullet tweeters (x6)",
+      "3 side panels",
+      "4 gauge wiring",
+      "Black Spider crossover",
+      "Free installation",
+    ],
+    category: "vehicle",
+    vehicleModel: "Toyota Quantum",
+    image: "/combos/Quantum basic combo.jpg",
+  },
 ];

@@ -12,8 +12,6 @@ import {
   doc,
   setDoc,
   getDocs,
-  query,
-  where,
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import TimeSlots from "./TimeSlots";
@@ -23,10 +21,17 @@ import { updateCustomerContact } from "@/lib/customerAuth";
 import { useSiteSettings } from "@/lib/pageContent";
 import { buildBookingWhatsAppMessage, businessWhatsAppDigits, buildProofWhatsAppMessage, proofOfPaymentWhatsAppUrl } from "@/lib/paymentConfig";
 
+type ComboOption = {
+  slug: string;
+  name: string;
+  price?: number;
+};
+
 type ComboDoc = {
   slug: string;
   name: string;
   businessId?: string;
+  price?: number;
 };
 
 export default function BookingForm({
@@ -40,12 +45,11 @@ export default function BookingForm({
   const { authReady, user, profile, refreshProfile } = useCustomerSession();
   const { settings } = useSiteSettings();
 
-  const catalogName = useMemo(() => {
-    if (!selectedComboSlug) return "";
-    return prebuiltCombos.find((c) => c.slug === selectedComboSlug)?.name ?? "";
-  }, [selectedComboSlug]);
-
+  const [selectedSlug, setSelectedSlug] = useState<string>(selectedComboSlug ?? "");
   const [comboName, setComboName] = useState<string>("");
+  const [comboOptions, setComboOptions] = useState<ComboOption[]>(() =>
+    prebuiltCombos.map((c) => ({ slug: c.slug, name: c.name, price: c.price }))
+  );
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
@@ -62,41 +66,46 @@ export default function BookingForm({
   const accountHref = `/account?mode=signup&next=${encodeURIComponent(nextBookPath)}`;
 
   useEffect(() => {
-    setComboName(catalogName);
-  }, [catalogName]);
+    if (selectedComboSlug) setSelectedSlug(selectedComboSlug);
+  }, [selectedComboSlug]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadComboOptions() {
+      try {
+        const snap = await getDocs(collection(db, "combos"));
+        const fetched = snap.docs
+          .map((d) => {
+            const data = d.data() as ComboDoc;
+            return { slug: data.slug, name: data.name, price: data.price };
+          })
+          .filter((c) => c.slug && c.name);
+
+        if (!cancelled && fetched.length > 0) {
+          setComboOptions(fetched);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    void loadComboOptions();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    const found = comboOptions.find((c) => c.slug === selectedSlug);
+    setComboName(found?.name ?? "");
+  }, [selectedSlug, comboOptions]);
 
   useEffect(() => {
     if (!profile) return;
     if (profile.name) setName(profile.name);
     if (profile.phone) setPhone(profile.phone);
   }, [profile]);
-
-  useEffect(() => {
-    if (!selectedComboSlug) return;
-
-    let cancelled = false;
-
-    async function loadComboName() {
-      try {
-        const combosRef = collection(db, "combos");
-        const constraints = [where("slug", "==", selectedComboSlug)];
-        if (selectedBusinessId) constraints.push(where("businessId", "==", selectedBusinessId));
-
-        const q = query(combosRef, ...constraints);
-        const snap = await getDocs(q);
-        const found = snap.docs[0]?.data() as ComboDoc | undefined;
-        if (cancelled) return;
-        if (found?.name) setComboName(found.name);
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    loadComboName();
-    return () => {
-      cancelled = true;
-    };
-  }, [selectedComboSlug, selectedBusinessId]);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -119,6 +128,10 @@ export default function BookingForm({
     }
     if (!date || !timeSlot) {
       alert("Please select a date and time slot.");
+      return;
+    }
+    if (!comboSlug) {
+      alert("Please select a combo package.");
       return;
     }
 
@@ -258,16 +271,26 @@ export default function BookingForm({
       <div>
         <h3 className="text-sm font-semibold text-gray-200 mb-2">Step 2 · Combo &amp; Slot</h3>
         <div className="space-y-3">
-          <input type="hidden" name="combo" value={selectedComboSlug ?? ""} />
           <input type="hidden" name="businessId" value={businessIdValue} />
-          <input
-            name="comboName"
-            placeholder="Selected Combo"
-            value={comboName || catalogName}
-            onChange={(e) => setComboName(e.target.value)}
-            className="input"
-            required
-          />
+          <input type="hidden" name="comboName" value={comboName} />
+          <label className="block">
+            <span className="sr-only">Select combo package</span>
+            <select
+              name="combo"
+              className="input"
+              value={selectedSlug}
+              onChange={(e) => setSelectedSlug(e.target.value)}
+              required
+            >
+              <option value="">Select a combo package</option>
+              {comboOptions.map((combo) => (
+                <option key={combo.slug} value={combo.slug}>
+                  {combo.name}
+                  {combo.price ? ` — R${combo.price.toLocaleString("en-ZA")}` : ""}
+                </option>
+              ))}
+            </select>
+          </label>
           <input type="date" className="input" value={date} onChange={(e) => setDate(e.target.value)} required />
           <TimeSlots selectedDate={date} value={timeSlot} onChange={setTimeSlot} />
         </div>
@@ -276,11 +299,13 @@ export default function BookingForm({
       <div className="rounded-xl border border-gray-800 bg-[#0b0b0d] p-4 space-y-2">
         <h3 className="text-sm font-semibold text-sigaYellow">Payment details</h3>
         <p className="text-sm text-gray-300">{settings.depositLabel || "R500 deposit (EFT)"}</p>
-        <p className="text-xs text-gray-400">Account name: {settings.accountName || "SIGA AUDIO SA"}</p>
-        {settings.bankName ? <p className="text-xs text-gray-400">Bank: {settings.bankName}</p> : null}
-        {settings.accountNumber ? <p className="text-xs text-gray-400">Account: {settings.accountNumber}</p> : null}
+        <p className="text-xs text-gray-400">Account name: {settings.accountName || "SIGA AUDIO PTY LTD"}</p>
+        <p className="text-xs text-gray-400">Bank: {settings.bankName || "Standard Bank"}</p>
+        <p className="text-xs text-gray-400">Account no: {settings.accountNumber || "10264653678"}</p>
         {settings.branchCode ? <p className="text-xs text-gray-400">Branch: {settings.branchCode}</p> : null}
-        <p className="text-xs text-gray-400">{settings.referenceHint}</p>
+        <p className="text-xs text-gray-400">
+          {settings.referenceHint || "Use your phone number as the payment reference"}
+        </p>
         <p className="text-xs text-gray-500">
           After submit we open WhatsApp to <span className="text-sigaYellow">{settings.phone || "0682824322"}</span> with
           your booking + payment info.
@@ -300,7 +325,7 @@ export default function BookingForm({
             buildProofWhatsAppMessage({
               name: name.trim() || undefined,
               phone: phone.trim() || undefined,
-              comboName: (comboName || catalogName) || undefined,
+              comboName: comboName || undefined,
               date: date || undefined,
             })
           )}
@@ -327,7 +352,11 @@ export default function BookingForm({
       </button>
 
       <p className="text-[11px] text-gray-500 text-center">
-        By submitting you agree that this booking is only confirmed once {business.name} responds on WhatsApp.
+        By submitting you agree to our{" "}
+        <Link href="/#terms" className="text-sigaYellow hover:text-yellow-300 underline">
+          terms & conditions
+        </Link>{" "}
+        and that this booking is only confirmed once {business.name} responds on WhatsApp.
       </p>
     </form>
   );

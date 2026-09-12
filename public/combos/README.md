@@ -17,6 +17,7 @@ Use **`.jpg`** or change `src/data/combos.ts` if you prefer `.png` / `.webp`.
 | Suzuki Dzire | `dzire.jpg` |
 | Ertiga | `ertiga.jpg` |
 | Bakkie | `bakkie.jpg` |
+| Quantum Basic | `Quantum basic combo.jpg` |
 
 Paths on the site are `/combos/entry.jpg`, `/combos/happy.jpg`, etc.
 

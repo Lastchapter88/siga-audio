@@ -33,9 +33,12 @@ export default function HomePageContent() {
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 text-center max-w-4xl">
-          <h1 className="text-5xl md:text-7xl font-extrabold text-sigaYellow drop-shadow-xl">
-            {content.hero.headline}
+          <h1 className="text-3xl md:text-5xl font-extrabold text-sigaYellow drop-shadow-xl leading-tight">
+            Car Sound Installation in Tembisa
           </h1>
+          <p className="mt-4 text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg">
+            {content.hero.headline}
+          </p>
           <p className="mt-4 text-gray-300 text-lg">{content.hero.subhead}</p>
 
           {content.hero.videoUrl ? (
@@ -86,9 +89,14 @@ export default function HomePageContent() {
         </div>
       </section>
 
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <h2 className="text-3xl font-bold mb-8">{content.moreServices.title}</h2>
-        <div className="grid md:grid-cols-2 gap-6">
+      <section id="services" className="max-w-6xl mx-auto px-6 py-16 scroll-mt-24">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <h2 className="text-3xl font-bold">{content.moreServices.title}</h2>
+          {content.moreServices.subtitle ? (
+            <p className="text-sigaYellow mt-3 text-sm uppercase tracking-wide">{content.moreServices.subtitle}</p>
+          ) : null}
+        </div>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {content.moreServices.items.map((item) => (
             <article
               key={item.id}
@@ -105,17 +113,58 @@ export default function HomePageContent() {
                 </div>
               ) : null}
               <div className="p-6">
-                <h3 className="text-2xl font-bold">{item.title}</h3>
+                <h3 className="text-xl font-bold text-sigaYellow">{item.title}</h3>
                 <p className="text-gray-400 text-sm mt-3">{item.body}</p>
-                <Link
-                  href={item.href || "#"}
-                  className="inline-flex mt-6 text-sigaYellow font-semibold hover:text-yellow-300 transition"
-                >
-                  {item.ctaLabel || "Learn more →"}
-                </Link>
+                {item.href.startsWith("http") ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex mt-6 text-sigaYellow font-semibold hover:text-yellow-300 transition"
+                  >
+                    {item.ctaLabel || "Learn more →"}
+                  </a>
+                ) : (
+                  <Link
+                    href={item.href || "#"}
+                    className="inline-flex mt-6 text-sigaYellow font-semibold hover:text-yellow-300 transition"
+                  >
+                    {item.ctaLabel || "Learn more →"}
+                  </Link>
+                )}
               </div>
             </article>
           ))}
+        </div>
+      </section>
+
+      <section id="terms" className="bg-[#0f0f0f] py-16 scroll-mt-24 border-t border-gray-900">
+        <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-10 items-start">
+          <div>
+            <h2 className="text-3xl font-bold mb-6">{content.termsAndConditions.title}</h2>
+            <ul className="space-y-4">
+              {content.termsAndConditions.items.map((term, index) => (
+                <li key={index} className="flex gap-3 text-gray-300">
+                  <span className="text-sigaYellow font-bold shrink-0">•</span>
+                  <span>{term}</span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-8 text-sm text-gray-500">
+              By booking with SIGA AUDIO SA you agree to these terms. Payment proof is required before leaving the
+              premises.
+            </p>
+          </div>
+          {content.termsAndConditions.posterImageUrl ? (
+            <div className="relative w-full aspect-[16/9] rounded-2xl overflow-hidden border border-gray-800 shadow-lg">
+              <Image
+                src={content.termsAndConditions.posterImageUrl}
+                alt="SIGA AUDIO SA services and terms poster"
+                fill
+                className="object-cover"
+              />
+            </div>
+          ) : null}
         </div>
       </section>
 

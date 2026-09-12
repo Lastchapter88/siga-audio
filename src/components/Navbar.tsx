@@ -36,6 +36,9 @@ export default function Navbar() {
         <Link href="/combos" className="hidden sm:inline text-gray-300 hover:text-white">
           Combos
         </Link>
+        <Link href="/#services" className="hidden sm:inline text-gray-300 hover:text-white">
+          Services
+        </Link>
         <Link href="/air-suspension" className="hidden sm:inline text-gray-300 hover:text-white">
           Suspension
         </Link>
