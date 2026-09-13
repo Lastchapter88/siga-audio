@@ -18,6 +18,7 @@ Use **`.jpg`** or change `src/data/combos.ts` if you prefer `.png` / `.webp`.
 | Ertiga | `ertiga.jpg` |
 | Bakkie | `bakkie.jpg` |
 | Quantum Basic | `Quantum basic combo.jpg` |
+| Air suspension | `suspension air.png`, `images.jfif` |
 
 Paths on the site are `/combos/entry.jpg`, `/combos/happy.jpg`, etc.
 

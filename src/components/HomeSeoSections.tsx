@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SEO, formatAddress, formatHoursList } from "@/lib/seoConfig";
+import FeaturedTikTok from "@/components/FeaturedTikTok";
 
 const services = [
   {
@@ -129,6 +130,25 @@ export default function HomeSeoSections() {
         </ul>
       </section>
 
+      <section id="tiktok" className="border-t border-gray-900 px-5 py-16 md:px-10">
+        <div className="mx-auto max-w-7xl rounded-3xl border border-sigaYellow/20 bg-gradient-to-br from-[#171717] to-[#090909] p-7 md:p-10">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="eyebrow mb-3">Social proof from the workshop</p>
+            <h2 className="text-3xl font-bold text-white md:text-4xl">See SIGA Audio in Action</h2>
+            <p className="mt-4 text-lg leading-7 text-gray-300">Real installations. Real vehicles. Real builds.</p>
+            <p className="mt-3 text-sm leading-6 text-gray-500">Follow our TikTok for the latest car sound installs, package builds and workshop moments.</p>
+          </div>
+          <div className="mt-8">
+            <FeaturedTikTok />
+          </div>
+          <div className="mt-8 text-center">
+            <a href={SEO.tiktokUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-sigaYellow px-6 py-3 font-bold text-black transition hover:bg-yellow-300">
+              Follow us on TikTok <span className="ml-2 text-xs font-semibold">{SEO.tiktokHandle}</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section id="service-areas" className="max-w-4xl mx-auto px-6 py-16 border-t border-gray-900 scroll-mt-24">
         <h2 className="text-2xl md:text-3xl font-bold text-sigaYellow mb-4">Areas We Serve</h2>
         <p className="text-gray-300 leading-relaxed mb-4">
@@ -151,63 +171,28 @@ export default function HomeSeoSections() {
         </p>
       </section>
 
-      <section id="visit-us" className="max-w-4xl mx-auto px-6 py-16 border-t border-gray-900 scroll-mt-24">
-        <h2 className="text-2xl md:text-3xl font-bold text-sigaYellow mb-4">Visit Us / Contact</h2>
-        <p className="text-gray-300 leading-relaxed mb-6">
-          Drop in during opening hours or book an installation slot online. We are easy to find in Tembisa on Flint
-          Mazibuko Street.
-        </p>
-        <ul className="space-y-3 text-gray-300">
-          <li>
-            <strong className="text-white">Address:</strong> {formatAddress()}
-          </li>
-          <li>
-            <strong className="text-white">Phone / WhatsApp:</strong>{" "}
-            <a href={`tel:+27${SEO.phone.slice(1)}`} className="text-sigaYellow hover:text-yellow-300">
-              {SEO.phoneDisplay}
-            </a>
-          </li>
-          <li>
-            <strong className="text-white">Email:</strong>{" "}
-            <a href={`mailto:${SEO.email}`} className="text-sigaYellow hover:text-yellow-300">
-              {SEO.email}
-            </a>
-          </li>
-          <li>
-            <strong className="text-white">Hours:</strong>
-            <ul className="mt-1 ml-4 space-y-1">
-              {hours.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-          </li>
-          <li>
-            <strong className="text-white">Directions:</strong>{" "}
-            <a
-              href={SEO.googleMapsUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sigaYellow hover:text-yellow-300"
-            >
-              Open in Google Maps →
-            </a>
-          </li>
-        </ul>
-        <div className="mt-8 flex flex-wrap gap-4">
-          <Link
-            href="/book"
-            className="bg-sigaYellow text-black px-6 py-3 rounded-xl font-bold hover:bg-yellow-300 transition"
-          >
-            Book Installation
-          </Link>
-          <a
-            href={`https://wa.me/${SEO.whatsapp}`}
-            target="_blank"
-            rel="noreferrer"
-            className="border border-sigaYellow text-sigaYellow px-6 py-3 rounded-xl font-semibold hover:bg-sigaYellow/10 transition"
-          >
-            WhatsApp Us
-          </a>
+      <section id="visit-us" className="scroll-mt-24 border-t border-gray-900 px-5 py-16 pb-32 md:px-10">
+        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div>
+            <p className="eyebrow mb-3">Tembisa workshop</p>
+            <h2 className="text-3xl font-bold text-sigaYellow md:text-4xl">Find SIGA Audio</h2>
+            <p className="mt-4 max-w-xl text-gray-300 leading-relaxed">Visit us for professional car sound installations, accessories, fault finding and vehicle upgrades. Book ahead for an installation slot, or contact us before you travel.</p>
+            <address className="mt-7 not-italic text-gray-200"><strong className="block text-white">Workshop address</strong><span className="mt-1 block">{formatAddress()}</span></address>
+            <div className="mt-6 grid gap-3 text-sm text-gray-300 sm:grid-cols-2">
+              <div><strong className="block text-white">Opening hours</strong><ul className="mt-2 space-y-1">{hours.map((line) => <li key={line}>{line}</li>)}</ul></div>
+              <div><strong className="block text-white">Contact</strong><a href={`tel:+27${SEO.phone.slice(1)}`} className="mt-2 block text-sigaYellow hover:text-yellow-300">Call {SEO.phoneDisplay}</a><a href={`mailto:${SEO.email}`} className="mt-1 block break-all text-sigaYellow hover:text-yellow-300">{SEO.email}</a></div>
+            </div>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a href={SEO.googleMapsUrl} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-sigaYellow px-6 py-3 font-bold text-black hover:bg-yellow-300">Get Directions</a>
+              <a href={`tel:+27${SEO.phone.slice(1)}`} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/20 px-6 py-3 font-semibold text-white hover:border-sigaYellow hover:text-sigaYellow">Call {SEO.phoneDisplay}</a>
+              <a href={`https://wa.me/${SEO.whatsapp}`} target="_blank" rel="noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-sigaYellow px-6 py-3 font-semibold text-sigaYellow hover:bg-sigaYellow/10">WhatsApp Us</a>
+            </div>
+            <Link href="/book" className="mt-5 inline-flex text-sm font-semibold text-gray-300 underline decoration-sigaYellow underline-offset-4 hover:text-white">Book an installation before you visit →</Link>
+          </div>
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#111] shadow-xl">
+            <iframe title="Map showing SIGA Audio in Tembisa" src="https://www.google.com/maps?q=7441+Flint+Mazibuko+St,+Tembisa,+1632,+South+Africa&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="h-[320px] w-full border-0 md:h-[420px]" />
+            <p className="px-4 py-3 text-xs text-gray-500">Use Google Maps for live navigation and current travel directions.</p>
+          </div>
         </div>
       </section>
 

@@ -4,6 +4,7 @@ import { ReactNode } from "react";
 import { SEO, absoluteUrl } from "@/lib/seoConfig";
 import { CustomerSessionProvider } from "@/components/CustomerSessionProvider";
 import VisitTracker from "@/components/VisitTracker";
+import Footer from "@/components/Footer";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -65,6 +66,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <CustomerSessionProvider>
           <VisitTracker />
           {children}
+          <Footer />
         </CustomerSessionProvider>
       </body>
     </html>

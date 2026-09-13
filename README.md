@@ -1,86 +1,104 @@
-# SIGA Audio (Next.js)
+# SIGA Audio SA
 
-## Production build
+Website and booking platform for **SIGA Audio SA** — a car sound installation and accessories shop in **Tembisa, Gauteng, South Africa**.
 
-Run from **`siga-audio`** (this folder):
+**Live site:** [https://sigaaudio.co.za](https://sigaaudio.co.za)  
+**Firebase Hosting:** [https://sigasound.web.app](https://sigasound.web.app)
 
-```powershell
-npm run build
+## What this website is about
+
+SIGA Audio SA specialises in:
+
+- Car sound installs (head units, speakers, amps, subwoofers)
+- Combo packages for popular vehicles (Polo Vivo, Quantum, bakkie, and more)
+- Fault finding, sales, bumper sensors, and air suspension
+- Online booking with EFT deposit + WhatsApp confirmation
+
+Customers can browse packages, book an installation slot, and send payment proof on WhatsApp. Admins manage bookings, homepage content, combo media, and site activity from a private admin panel.
+
+## Stack
+
+| Layer | Technology |
+|--------|------------|
+| Framework | [Next.js 14](https://nextjs.org/) (App Router) |
+| UI | [React 18](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [Framer Motion](https://www.framer.com/motion/), [Lucide](https://lucide.dev/) |
+| Language | [TypeScript](https://www.typescriptlang.org/) |
+| Backend / data | [Firebase](https://firebase.google.com/) — Authentication, Firestore, Storage |
+| Hosting | Firebase Hosting (static export from Next.js `output: "export"`) |
+| Build output | Static site in `out/` |
+
+## Main features
+
+- Public homepage with packages, services, terms, SEO content, and LocalBusiness JSON-LD
+- Combo catalog and detail pages
+- Air suspension page with workshop photos
+- Customer signup / sign-in and installation booking
+- WhatsApp payment flow (Standard Bank EFT deposit)
+- Admin panel: bookings, content CMS, combos, media, activity
+- `sitemap.xml` and `robots.txt` for Google Search Console
+
+## Project structure
+
+```
+siga-audio/
+├── public/           # Static assets (combos photos, icons, sitemap, robots)
+├── src/app/          # Next.js routes (pages, admin, book, combos)
+├── src/components/   # UI components
+├── src/data/         # Combo catalog
+├── src/lib/          # Firebase, auth, SEO, payment helpers
+├── firebase.json     # Hosting + rules config
+└── out/              # Generated static site (after build)
 ```
 
-Success: you get **`out/`** with **`out/index.html`**.
-
-### Build stuck for a long time (“Creating an optimized production build…”)
-
-On **Windows** this is often:
-
-1. **Corrupted webpack cache** in **`.next/cache`** (error in the log like `Restoring pack failed`).  
-   - **Fix:** stop **`npm run dev`** (it locks files), then run a **clean build**:
-   ```powershell
-   npm run build:fresh
-   ```
-   That deletes **`.next`** and **`out`**, then builds again. `next.config.mjs` also disables webpack’s persistent cache for production builds to avoid repeat hangs.
-
-2. **File locks / EPERM** on **`.next\trace`** — antivirus or another process using the folder.  
-   - Close the dev server and Cursor/VS Code if needed, delete **`.next`**, retry.
-
-3. **Not stuck** — first build after a clean can take **several minutes** on a slow PC; 2+ hours usually means it’s hung; use **`build:fresh`** above.
-
-### Deploy when normal build misbehaves
+## Getting started
 
 ```powershell
-npm run deploy:hosting:fresh
-```
-
-Same as **`deploy:hosting`** but runs **`build:fresh`** first.
-
-Other checks: run **`npm run lint`** separately (lint is skipped during build via `next.config.mjs`).
-
-## Preview the static site (Firebase-style `out/` folder)
-
-**Run everything from this folder** (`siga-audio`), not the parent `Siga Sound` folder.
-
-```powershell
-cd "c:\Users\Admin\Desktop\Siga Sound\siga-audio"
-npm run build
-npm run preview
-```
-
-Then open **http://localhost:5050**
-
-- If **`GET /` returns 404**, you are either serving the wrong directory or `npm run build` did not finish. After a successful build you must have **`siga-audio\out\index.html`**.
-- Do **not** run `npx serve out` from `Desktop\Siga Sound` — there is no exported site there.
-
-### One command (build + serve)
-
-```powershell
-npm run preview:static
-```
-
-## Dev server
-
-```powershell
+cd siga-audio
+npm install
 npm run dev
 ```
 
-## Admin (bookings & combos)
+Open [http://localhost:3000](http://localhost:3000).
 
-| URL | Purpose |
-|-----|---------|
-| `/admin/login` | Sign in with Firebase email/password |
-| `/admin/dashboard` | View bookings, proof images, confirm/cancel |
-| `/admin/combos` | Manage Firestore combo catalog (needs signup + `users/{uid}.businessId`) |
+Copy `.env.local.example` to `.env.local` and add your Firebase web config keys (never commit secrets).
 
-Create the first account via **`/signup`** (business + admin user). Use the same email/password on **`/admin/login`**.
+## Build & preview
 
-**Firestore:** Admins need read/write on `bookings` and `combos` in your security rules. Bookings from the public form use `businessId: ""` unless booking with a multi-tenant link; the dashboard merges those with your business’s bookings when your user has a `businessId`.
+```powershell
+npm run build          # writes static site to out/
+npm run preview        # serve out/ at http://localhost:5050
+npm run preview:static # build + preview
+```
+
+If the Windows build hangs on webpack cache issues:
+
+```powershell
+npm run build:fresh
+```
 
 ## Deploy (Firebase Hosting)
 
 ```powershell
 npm run deploy:hosting
+# or, after a stuck build:
+npm run deploy:hosting:fresh
 ```
 
-If the build step hangs, use **`npm run deploy:hosting:fresh`** instead.
+`firebase.json` serves the `out/` folder as the Hosting public directory.
 
-Uses `firebase.json` → `public: "out"` (build creates that folder).
+## Admin
+
+| URL | Purpose |
+|-----|---------|
+| `/admin/login` | Admin Google or email/password sign-in |
+| `/admin/dashboard` | Bookings, proofs, confirm/cancel |
+| `/admin/content` | Homepage & payment details CMS |
+| `/admin/combos` | Combo catalog & media |
+| `/admin/media` | Air suspension / site media |
+| `/admin/activity` | Visits & sign-ins |
+
+Only allowlisted admin emails in `src/lib/adminConfig.ts` (and matching Firestore rules) can access `/admin`.
+
+## License
+
+Private business project for SIGA Audio SA. All rights reserved unless otherwise stated.

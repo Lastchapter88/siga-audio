@@ -1,5 +1,6 @@
 "use client";
 
+
 import { Suspense, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -7,6 +8,9 @@ import Navbar from "@/components/Navbar";
 import { business } from "@/lib/businessConfig";
 import { proofOfPaymentWhatsAppUrl } from "@/lib/paymentConfig";
 import { useSiteSettings } from "@/lib/pageContent";
+import { CheckCircle2, MessageCircle } from "lucide-react";
+import { SEO } from "@/lib/seoConfig";
+
 
 function SuccessInner() {
   const params = useSearchParams();
@@ -21,19 +25,22 @@ function SuccessInner() {
   );
 
   return (
-    <section className="py-20 px-6 max-w-2xl mx-auto text-center">
-      <h1 className="text-3xl md:text-4xl font-bold mb-4">Booking Submitted</h1>
-      <p className="text-gray-300 text-sm mb-6">
+    <section className="mx-auto max-w-2xl px-5 py-20 text-center md:px-10">
+      <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-sigaYellow/15 text-sigaYellow"><CheckCircle2 size={34} aria-hidden="true" /></div>
+      <p className="eyebrow mt-7">Next step: confirm your deposit</p>
+      <h1 className="mt-3 text-4xl font-black tracking-tight md:text-5xl">Your installation request is in.</h1>
+      <p className="mt-5 text-base leading-7 text-gray-300">
         Your booking is in the {business.name} admin panel. Now send your proof of payment on WhatsApp.
       </p>
 
-      <div className="space-y-3 mb-8">
+      <div className="mt-8 space-y-3">
         <a
           href={proofWa}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex w-full max-w-md mx-auto items-center justify-center gap-2 bg-[#25D366] text-black px-6 py-3 rounded-xl text-sm font-bold hover:brightness-110 transition"
+          className="inline-flex min-h-14 w-full max-w-md items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-3 text-sm font-bold text-black transition hover:brightness-110"
         >
+          <MessageCircle size={18} aria-hidden="true" />
           Send proof of payment on WhatsApp ({phone})
         </a>
         {wa ? (
@@ -41,18 +48,23 @@ function SuccessInner() {
             href={wa}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex w-full max-w-md mx-auto items-center justify-center bg-sigaYellow text-black px-6 py-3 rounded-xl text-sm font-semibold hover:bg-yellow-300 transition"
+            className="inline-flex min-h-14 w-full max-w-md items-center justify-center rounded-xl bg-sigaYellow px-6 py-3 text-sm font-semibold text-black transition hover:bg-yellow-300"
           >
             Re-open booking WhatsApp message
           </a>
         ) : null}
       </div>
 
-      <p className="text-gray-500 text-xs mb-6">
+      <p className="mt-6 text-xs text-gray-500">
         Tip: In WhatsApp, attach your EFT screenshot/PDF after the chat opens.
       </p>
 
-      <Link href="/" className="inline-flex text-sm text-gray-400 hover:text-white">
+      <a href={SEO.googleMapsUrl} target="_blank" rel="noreferrer" className="mt-8 inline-flex min-h-12 w-full max-w-md items-center justify-center rounded-xl border border-sigaYellow px-6 py-3 text-sm font-semibold text-sigaYellow hover:bg-sigaYellow/10">
+        Get directions to the workshop
+      </a>
+      <Link href="/#visit-us" className="mt-4 inline-flex text-sm text-gray-400 hover:text-white">View address and opening hours</Link>
+
+      <Link href="/" className="mt-4 inline-flex text-sm text-gray-400 hover:text-white">
         Back to Home
       </Link>
     </section>

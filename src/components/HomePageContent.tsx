@@ -6,6 +6,7 @@ import { combos as prebuiltCombos } from "@/data/combos";
 import PopularPackagesSection from "@/components/PopularPackagesSection";
 import Navbar from "@/components/Navbar";
 import { useHomeContent } from "@/lib/pageContent";
+import { ArrowRight, CarFront, Check, MapPin } from "lucide-react";
 
 export default function HomePageContent() {
   const { content } = useHomeContent();
@@ -15,13 +16,14 @@ export default function HomePageContent() {
     <main className="bg-background text-white min-h-screen">
       <Navbar />
 
-      <section className="relative h-[85vh] flex items-center justify-center overflow-hidden px-6">
+      <section className="relative flex min-h-[calc(100svh-64px)] items-center overflow-hidden px-5 py-20 md:px-10">
         {content.hero.backgroundImageUrl ? (
           <Image
             src={content.hero.backgroundImageUrl}
             alt=""
             fill
             priority
+            sizes="100vw"
             className="object-cover opacity-40"
           />
         ) : (
@@ -32,40 +34,40 @@ export default function HomePageContent() {
         )}
         <div className="absolute inset-0 bg-black/50" />
 
-        <div className="relative z-10 text-center max-w-4xl">
-          <h1 className="text-3xl md:text-5xl font-extrabold text-sigaYellow drop-shadow-xl leading-tight">
-            Car Sound Installation in Tembisa
-          </h1>
-          <p className="mt-4 text-2xl md:text-4xl font-extrabold text-white drop-shadow-lg">
+        <div className="relative z-10 mx-auto w-full max-w-7xl">
+          <div className="max-w-3xl">
+          <p className="eyebrow mb-5">Automotive audio / Tembisa, Gauteng</p>
+          <h1 className="max-w-3xl text-5xl font-black leading-[0.96] tracking-[-0.06em] text-white md:text-8xl">
             {content.hero.headline}
-          </p>
-          <p className="mt-4 text-gray-300 text-lg">{content.hero.subhead}</p>
+          </h1>
+          <p className="mt-6 max-w-xl text-base leading-7 text-gray-300 md:text-lg">{content.hero.subhead}</p>
 
           {content.hero.videoUrl ? (
-            <div className="mt-6 mx-auto max-w-xl rounded-2xl overflow-hidden border border-gray-800">
+            <div className="mt-8 max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-black/40">
               <video src={content.hero.videoUrl} controls playsInline className="w-full max-h-64" />
             </div>
           ) : null}
 
-          <div className="mt-8 flex items-center justify-center gap-3 flex-wrap">
+          <div className="mt-9 flex flex-wrap items-center gap-3">
             <Link
               href={content.hero.primaryCta.href || "/combos"}
-              className="bg-sigaYellow text-black px-8 py-4 rounded-xl font-bold hover:scale-[1.03] transition hover:bg-yellow-300 inline-flex items-center justify-center"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-sigaYellow px-6 py-3 font-bold text-black transition hover:bg-yellow-300"
             >
               {content.hero.primaryCta.label || "View Packages"}
+              <ArrowRight size={17} aria-hidden="true" />
             </Link>
             <Link
-              href="/account?mode=signup&next=/book"
-              className="border border-sigaYellow text-sigaYellow px-8 py-4 rounded-xl font-semibold hover:bg-sigaYellow/10 transition inline-flex items-center justify-center"
+              href="/combos#vehicle-finder"
+              className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/20 px-6 py-3 font-semibold text-white transition hover:border-sigaYellow hover:text-sigaYellow"
             >
-              Sign up to Book
+              <CarFront size={17} aria-hidden="true" /> Find my vehicle
             </Link>
-            <Link
-              href={content.hero.secondaryCta.href || "/book"}
-              className="border border-gray-700 text-gray-200 px-8 py-4 rounded-xl font-semibold hover:border-sigaYellow hover:text-white transition inline-flex items-center justify-center"
-            >
-              {content.hero.secondaryCta.label || "Book Now"}
-            </Link>
+          </div>
+          <div className="mt-12 grid max-w-xl grid-cols-1 gap-4 border-t border-white/10 pt-5 text-sm text-gray-400 sm:grid-cols-3">
+            <div className="flex items-center gap-2"><Check size={16} className="text-sigaYellow" aria-hidden="true" /> Real packages</div>
+            <div className="flex items-center gap-2"><Check size={16} className="text-sigaYellow" aria-hidden="true" /> Installation included</div>
+            <div className="flex items-center gap-2"><MapPin size={16} className="text-sigaYellow" aria-hidden="true" /> Tembisa workshop</div>
+          </div>
           </div>
         </div>
       </section>
@@ -77,11 +79,12 @@ export default function HomePageContent() {
       />
 
       <section className="bg-[#0f0f0f] py-16 text-center">
-        <h2 className="text-3xl font-bold mb-10">{content.howItWorks.title}</h2>
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto px-6">
+          <p className="eyebrow mb-3">From browsing to bass</p>
+          <h2 className="text-3xl font-bold mb-10">{content.howItWorks.title}</h2>
+        <div className="grid max-w-5xl gap-4 px-6 md:grid-cols-3">
           {content.howItWorks.steps.map((step, index) => (
-            <div key={`${step.title}-${index}`} className="bg-[#0b0b0d] border border-gray-800 rounded-2xl p-6">
-              <h3 className="text-sigaYellow text-3xl font-bold">{index + 1}</h3>
+            <div key={`${step.title}-${index}`} className="surface rounded-2xl p-6 text-left">
+              <h3 className="text-sigaYellow text-3xl font-bold">0{index + 1}</h3>
               <p className="mt-2 text-gray-200 font-semibold">{step.title}</p>
               {step.body ? <p className="mt-2 text-sm text-gray-400">{step.body}</p> : null}
             </div>
@@ -104,7 +107,7 @@ export default function HomePageContent() {
             >
               {item.imageUrl ? (
                 <div className="relative h-40 w-full bg-black/40">
-                  <Image src={item.imageUrl} alt={item.title} fill className="object-cover" />
+                  <Image src={item.imageUrl} alt={item.title} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover" />
                 </div>
               ) : null}
               {item.videoUrl ? (
@@ -161,6 +164,7 @@ export default function HomePageContent() {
                 src={content.termsAndConditions.posterImageUrl}
                 alt="SIGA AUDIO SA services and terms poster"
                 fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>
@@ -186,7 +190,7 @@ export default function HomePageContent() {
             <div className="space-y-4">
               {section.imageUrl ? (
                 <div className="relative h-56 w-full rounded-2xl overflow-hidden border border-gray-800">
-                  <Image src={section.imageUrl} alt={section.title} fill className="object-cover" />
+                  <Image src={section.imageUrl} alt={section.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               ) : null}
               {section.videoUrl ? (

@@ -6,7 +6,11 @@ import Image from "next/image";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { comboImageUrl } from "@/lib/comboImages";
-import { DEFAULT_SITE_IMAGES, SITE_MEDIA_SLOTS } from "@/lib/siteMediaConfig";
+import {
+  AIR_SUSPENSION_GALLERY,
+  DEFAULT_SITE_IMAGES,
+  SITE_MEDIA_SLOTS,
+} from "@/lib/siteMediaConfig";
 
 type Package = {
   slot: string;
@@ -22,7 +26,7 @@ export default function AirSuspensionContent() {
       slot: s.slot,
       name: s.label.replace(/^Air Suspension — /, ""),
       description: s.description ?? "",
-      image: DEFAULT_SITE_IMAGES[s.slot] ?? "/images.jpg",
+      image: DEFAULT_SITE_IMAGES[s.slot] ?? "/combos/suspension air.png",
     }))
   );
 
@@ -30,16 +34,21 @@ export default function AirSuspensionContent() {
     async function load() {
       try {
         const snap = await getDocs(collection(db, "siteMedia"));
-        const bySlot = new Map(snap.docs.map((d) => [d.id, d.data() as { imageUrl?: string; videoUrl?: string }]));
+        const bySlot = new Map(
+          snap.docs.map((d) => [d.id, d.data() as { imageUrl?: string; videoUrl?: string }])
+        );
 
         setPackages(
           SITE_MEDIA_SLOTS.map((s) => {
             const stored = bySlot.get(s.slot);
+            const raw = stored?.imageUrl?.trim();
+            // Prefer combo-folder defaults when Firestore still has old missing paths.
+            const image = comboImageUrl(raw || DEFAULT_SITE_IMAGES[s.slot]);
             return {
               slot: s.slot,
               name: s.label.replace(/^Air Suspension — /, ""),
               description: s.description ?? "",
-              image: comboImageUrl(stored?.imageUrl ?? DEFAULT_SITE_IMAGES[s.slot]),
+              image,
               videoUrl: stored?.videoUrl,
             };
           })
@@ -59,6 +68,24 @@ export default function AirSuspensionContent() {
         Adjust your ride height anytime. Built for comfort, stance, and clean installation.
       </p>
 
+      <div className="mt-10 grid sm:grid-cols-2 gap-4">
+        {AIR_SUSPENSION_GALLERY.map((photo) => (
+          <div
+            key={photo.src}
+            className="relative h-56 md:h-72 w-full overflow-hidden rounded-2xl border border-gray-800 bg-black/40"
+          >
+            <Image
+              src={photo.src}
+              alt={photo.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
+              priority
+            />
+          </div>
+        ))}
+      </div>
+
       <div className="grid md:grid-cols-3 gap-6 mt-10">
         {packages.map((pkg) => (
           <article
@@ -66,7 +93,13 @@ export default function AirSuspensionContent() {
             className="bg-[#111] border border-gray-800 rounded-2xl overflow-hidden hover:border-sigaYellow/70 transition"
           >
             <div className="relative h-44 w-full bg-black/40">
-              <Image src={pkg.image} alt={pkg.name} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover" />
+              <Image
+                src={pkg.image}
+                alt={pkg.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+                className="object-cover"
+              />
             </div>
             {pkg.videoUrl ? (
               <div className="px-5 pt-4">

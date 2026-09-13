@@ -12,10 +12,20 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const combo = combos.find((c) => c.slug === params.slug);
   if (!combo) return { title: "Package Not Found" };
 
+  const title = `${combo.name} | Car Sound Package & Installation`;
+  const description = `${combo.description} From R${combo.price.toLocaleString("en-ZA")}. Book installation with SIGA Audio in Tembisa, Gauteng.`;
+
   return {
-    title: combo.name,
-    description: `${combo.description} From R${combo.price.toLocaleString("en-ZA")}. Book installation with SIGA Audio SA.`,
+    title,
+    description,
     alternates: { canonical: `${SEO.siteUrl}/combo/${combo.slug}` },
+    openGraph: {
+      type: "website",
+      url: `${SEO.siteUrl}/combo/${combo.slug}`,
+      title,
+      description,
+      images: [{ url: `${SEO.siteUrl}${combo.image}`, alt: `${combo.name} from SIGA Audio` }],
+    },
   };
 }
 
@@ -25,17 +35,27 @@ export default function ComboPage({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <article className="sr-only">
-        <h1>{combo.name}</h1>
-        <p>{combo.tagline ?? ""}</p>
-        <p>{combo.description}</p>
-        <ul>
-          {combo.features.map((feature) => (
-            <li key={feature}>{feature}</li>
-          ))}
-        </ul>
-        <p>Price from R{combo.price.toLocaleString("en-ZA")}</p>
-      </article>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Product",
+            name: combo.name,
+            description: combo.description,
+            image: [SEO.siteUrl + combo.image],
+            brand: { "@type": "Brand", name: SEO.businessName },
+            offers: {
+              "@type": "Offer",
+              url: `${SEO.siteUrl}/combo/${combo.slug}`,
+              priceCurrency: "ZAR",
+              price: combo.price.toFixed(2),
+              availability: "https://schema.org/InStock",
+              seller: { "@type": "LocalBusiness", name: SEO.businessName },
+            },
+          }),
+        }}
+      />
       <ComboDetailsClient slug={params.slug} />
     </>
   );

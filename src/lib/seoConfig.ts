@@ -41,6 +41,8 @@ export const SEO = {
   },
   googleMapsUrl:
     "https://www.google.com/maps/search/?api=1&query=7441+Flint+Mazibuko+St,+Tembisa,+1632",
+  tiktokUrl: "https://www.tiktok.com/@siga_____cs",
+  tiktokHandle: "@siga_____cs",
 } as const;
 
 export function absoluteUrl(path: string): string {

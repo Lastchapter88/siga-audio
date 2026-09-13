@@ -1,5 +1,6 @@
 "use client";
 
+
 import { FormEvent, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -9,6 +10,7 @@ import {
   startGoogleAdminSignIn,
 } from "@/lib/adminAuth";
 import { ADMIN_EMAILS } from "@/lib/adminConfig";
+
 
 export default function Signup() {
   const router = useRouter();

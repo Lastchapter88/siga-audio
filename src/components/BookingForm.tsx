@@ -241,35 +241,21 @@ export default function BookingForm({
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl mx-auto space-y-6">
-      <div className="rounded-xl border border-sigaYellow/30 bg-sigaYellow/5 px-4 py-3 text-sm text-gray-200">
-        Signed in as <span className="text-sigaYellow font-semibold">{user.email}</span>
+      <div className="surface rounded-2xl px-5 py-4 text-sm text-gray-200">
+        Signed in as <span className="font-semibold text-sigaYellow">{user.email}</span>
       </div>
 
-      <div>
-        <h3 className="text-sm font-semibold text-gray-200 mb-2">Step 1 · Your Details</h3>
+      <div className="surface rounded-2xl p-5 md:p-6">
+        <div className="mb-5 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-sigaYellow text-sm font-bold text-black">01</span><div><h3 className="font-semibold text-white">Your details</h3><p className="text-xs text-gray-500">Tell us about you and the vehicle.</p></div></div>
         <div className="space-y-3">
-          <input
-            name="name"
-            placeholder="Full Name"
-            className="input"
-            required
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            name="phone"
-            placeholder="WhatsApp Number (required)"
-            className="input"
-            required
-            value={phone}
-            onChange={(e) => setPhone(e.target.value)}
-          />
-          <input name="carModel" placeholder="Car Model (e.g. Polo Vivo)" className="input" required />
+          <label className="block text-xs font-medium text-gray-400">Full name<input name="name" placeholder="Full name" className="input mt-2" required value={name} onChange={(e) => setName(e.target.value)} /></label>
+          <label className="block text-xs font-medium text-gray-400">WhatsApp number<input name="phone" placeholder="WhatsApp number" className="input mt-2" required value={phone} onChange={(e) => setPhone(e.target.value)} /></label>
+          <label className="block text-xs font-medium text-gray-400">Vehicle model<input name="carModel" placeholder="e.g. Polo Vivo" className="input mt-2" required /></label>
         </div>
       </div>
 
-      <div>
-        <h3 className="text-sm font-semibold text-gray-200 mb-2">Step 2 · Combo &amp; Slot</h3>
+      <div className="surface rounded-2xl p-5 md:p-6">
+        <div className="mb-5 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-sigaYellow text-sm font-bold text-black">02</span><div><h3 className="font-semibold text-white">Setup &amp; installation slot</h3><p className="text-xs text-gray-500">Choose the package and a date that works.</p></div></div>
         <div className="space-y-3">
           <input type="hidden" name="businessId" value={businessIdValue} />
           <input type="hidden" name="comboName" value={comboName} />
@@ -296,7 +282,7 @@ export default function BookingForm({
         </div>
       </div>
 
-      <div className="rounded-xl border border-gray-800 bg-[#0b0b0d] p-4 space-y-2">
+      <div className="rounded-2xl border border-sigaYellow/25 bg-sigaYellow/[0.06] p-5 space-y-2">
         <h3 className="text-sm font-semibold text-sigaYellow">Payment details</h3>
         <p className="text-sm text-gray-300">{settings.depositLabel || "R500 deposit (EFT)"}</p>
         <p className="text-xs text-gray-400">Account name: {settings.accountName || "SIGA AUDIO PTY LTD"}</p>
@@ -312,8 +298,8 @@ export default function BookingForm({
         </p>
       </div>
 
-      <div>
-        <h3 className="text-sm font-semibold text-gray-200 mb-2">Step 3 · Proof of Payment</h3>
+      <div className="surface rounded-2xl p-5 md:p-6">
+        <div className="mb-5 flex items-center gap-3"><span className="flex h-8 w-8 items-center justify-center rounded-full bg-sigaYellow text-sm font-bold text-black">03</span><div><h3 className="font-semibold text-white">Payment proof</h3><p className="text-xs text-gray-500">Send your EFT proof on WhatsApp or upload it.</p></div></div>
         <p className="text-xs text-gray-400 mb-3">
           Send your EFT proof on WhatsApp to{" "}
           <span className="text-sigaYellow font-semibold">{settings.phone || "0682824322"}</span>, or upload it below

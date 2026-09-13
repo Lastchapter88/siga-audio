@@ -15,13 +15,19 @@ export default function BookPage() {
   return (
     <main className="bg-background min-h-screen text-white">
       <Navbar />
-      <section className="py-12 px-6 max-w-4xl mx-auto">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center">Book Car Sound Installation</h1>
-        <p className="text-gray-400 text-sm max-w-xl mx-auto text-center mb-8 leading-relaxed">
+      <section className="mx-auto max-w-5xl px-5 py-12 md:px-10 md:py-16">
+        <div className="mb-10 max-w-3xl">
+        <p className="eyebrow mb-4">Reserve your installation</p>
+        <h1 className="text-4xl font-black tracking-tight md:text-6xl">Make your next drive sound better.</h1>
+        <p className="mt-5 max-w-2xl text-base leading-7 text-gray-400">
           Sign up with your name and phone number, pick a day and time, pay the deposit, upload proof, then send payment
           details on WhatsApp to <span className="text-sigaYellow">{SEO.phone}</span>. SIGA Audio SA confirms your slot
           once payment proof is received.
         </p>
+        <div className="mt-7 grid max-w-2xl grid-cols-2 gap-3 text-xs text-gray-400 sm:grid-cols-4">
+          {["Choose setup", "Your vehicle", "Pick a slot", "Confirm deposit"].map((step, index) => <div key={step} className="surface rounded-xl p-3"><span className="text-sigaYellow">0{index + 1}</span><p className="mt-2">{step}</p></div>)}
+        </div>
+        </div>
 
         <Suspense
           fallback={

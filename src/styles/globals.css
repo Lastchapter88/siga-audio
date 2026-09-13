@@ -2,16 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  @apply bg-background text-foreground antialiased;
+:root {
+  --siga-yellow: #ffd400;
+  --siga-ink: #070708;
+  --siga-panel: #101012;
+  --siga-line: rgba(255, 255, 255, 0.1);
+  --siga-muted: #9b9ba3;
+}
+
+html {
+  background: var(--siga-ink);
   scroll-behavior: smooth;
 }
 
+body {
+  @apply bg-background text-foreground antialiased;
+  background:
+    radial-gradient(circle at 85% -10%, rgba(255, 212, 0, 0.08), transparent 28rem),
+    var(--siga-ink);
+  letter-spacing: -0.01em;
+}
+
 .input {
-  @apply w-full p-3 bg-[#111] text-white rounded border border-gray-700 focus:outline-none focus:border-sigaYellow;
+  @apply w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-white outline-none transition placeholder:text-white/35 focus:border-sigaYellow focus:ring-2 focus:ring-sigaYellow/20;
 }
 
 .btn {
-  @apply w-full bg-sigaYellow text-black p-3 rounded font-bold hover:bg-yellow-300 transition;
+  @apply inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-sigaYellow px-5 py-3 font-bold text-black transition hover:bg-yellow-300 focus:outline-none focus:ring-2 focus:ring-sigaYellow focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-60;
+}
+
+.eyebrow {
+  @apply text-[11px] font-semibold uppercase tracking-[0.24em] text-sigaYellow;
+}
+
+.surface {
+  @apply border border-white/10 bg-white/[0.035];
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 

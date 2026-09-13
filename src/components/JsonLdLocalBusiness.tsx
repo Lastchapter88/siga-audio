@@ -16,10 +16,11 @@ export default function JsonLdLocalBusiness() {
 
   const schema = {
     "@context": "https://schema.org",
-    "@type": ["LocalBusiness", "AutoPartsStore"],
+    "@type": ["AutomotiveBusiness", "AutoPartsStore"],
     name: SEO.businessName,
     legalName: SEO.businessLegalName,
     url: SEO.siteUrl,
+    hasMap: SEO.googleMapsUrl,
     logo: absoluteUrl("/apple-touch-icon.png"),
     image: absoluteUrl(SEO.ogImage),
     description: SEO.description,
